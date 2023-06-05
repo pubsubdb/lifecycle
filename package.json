@@ -1,0 +1,43 @@
+{
+  "name": "con",
+  "version": "0.0.1",
+  "description": "The PubSubDB Connection Test Client.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --build tsconfig.json",
+    "dev": "ts-node-dev --respawn --inspect=9228 --transpile-only --ignore-watch node_modules -- web/server.ts",
+    "server": "ts-node-dev --respawn --inspect=9228 --transpile-only --ignore-watch node_modules -- web/server.ts",
+    "service": "ts-node-dev --respawn --inspect=9228 --transpile-only --ignore-watch node_modules -- src/index.ts",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --fix --ext .ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/auth": "^4.2.0",
+    "@fastify/basic-auth": "^5.0.0",
+    "@fastify/multipart": "^7.6.0",
+    "@fastify/swagger": "^8.3.1",
+    "@fastify/swagger-ui": "^1.8.0",
+    "@fastify/websocket": "^8.1.0",
+    "@pubsubdb/pubsubdb": "^0.0.23",
+    "fastify": "^4.17.0",
+    "ioredis": "^5.3.2",
+    "redis": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/node": "^18.15.11",
+    "@types/ws": "^8.5.4",
+    "@typescript-eslint/eslint-plugin": "^5.58.0",
+    "@typescript-eslint/parser": "^5.58.0",
+    "eslint": "^8.38.0",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.4"
+  }
+}

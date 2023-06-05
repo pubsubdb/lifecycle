@@ -1,0 +1,18 @@
+input:
+  type: object
+  properties:
+    operation:
+      type: string
+      enum:
+        - add
+        - subtract
+        - multiply
+        - divide
+    values:
+      type: string
+      description: stringified JSON array of numbers
+output:
+  type: object
+  properties:
+    result:
+      type: number

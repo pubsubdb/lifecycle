@@ -1,0 +1,31 @@
+subscribes: calculate
+publishes: calculated
+
+input:
+  schema:
+    $ref: '../schemas/calculate.yaml#/input'
+output:
+  schema:
+    $ref: '../schemas/calculate.yaml#/output'
+
+activities:
+  calculate:
+    title: Calculate
+    type: trigger
+
+  operate:
+    title: Operate
+    type: await
+    subtype: calculation.execute
+    input:
+      schema:
+        $ref: '../schemas/calculate.yaml#/input'
+      maps:
+        $ref: '../maps/calculate.yaml#/operate/input'
+    job:
+      maps:
+        $ref: '../maps/calculate.yaml#/operate/job'
+
+transitions:
+  calculate:
+    - to: operate

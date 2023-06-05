@@ -1,0 +1,107 @@
+subscribes: calculation.execute
+publishes: calculation.executed
+
+input:
+  schema:
+    $ref: '../../v1/schemas/calculate.yaml#/input'
+output:
+  schema:
+    $ref: '../../v1/schemas/calculate.yaml#/output'
+
+activities:
+
+  receiver:
+    title: Receive Values
+    type: trigger
+
+  add:
+    title: Add
+    type: exec
+    subtype: calculation.add
+    input:
+      schema:
+        $ref: '../../v1/schemas/calculate.yaml#/input'
+      maps:
+        $ref: '../../v1/maps/calculation.execute.yaml#/executor/input'
+    job:
+      maps:
+        $ref: '../../v1/maps/calculation.execute.yaml#/executor/job'
+
+  subtract:
+    title: Subtract
+    type: exec
+    subtype: calculation.subtract
+    input:
+      schema:
+        $ref: '../../v1/schemas/calculate.yaml#/input'
+      maps:
+        $ref: '../../v1/maps/calculation.execute.yaml#/executor/input'
+    job:
+      maps:
+        $ref: '../../v1/maps/calculation.execute.yaml#/executor/job'
+
+  multiply:
+    title: Multiply
+    type: exec
+    subtype: calculation.multiply
+    input:
+      schema:
+        $ref: '../../v1/schemas/calculate.yaml#/input'
+      maps:
+        $ref: '../../v1/maps/calculation.execute.yaml#/executor/input'
+    job:
+      maps:
+        $ref: '../../v1/maps/calculation.execute.yaml#/executor/job'
+
+  divide:
+    title: Divide
+    type: exec
+    subtype: calculation.divide
+    input:
+      schema:
+        $ref: '../../v1/schemas/calculate.yaml#/input'
+      maps:
+        $ref: '../../v1/maps/calculation.execute.yaml#/executor/input'
+    job:
+      maps:
+        $ref: '../../v1/maps/calculation.execute.yaml#/executor/job'
+
+  executor:
+    title: Execute Calculation
+    description: DEPRECATED
+    type: exec
+    subtype: calculation.execute
+    input:
+      schema:
+        $ref: '../../v1/schemas/calculate.yaml#/input'
+      maps:
+        $ref: '../../v1/maps/calculation.execute.yaml#/executor/input'
+    job:
+      maps:
+        $ref: '../../v1/maps/calculation.execute.yaml#/executor/job'
+
+transitions:
+  receiver:
+    - to: add
+      conditions:
+        match:
+          - expected: add
+            actual: "{receiver.output.data.operation}"
+
+    - to: subtract
+      conditions:
+        match:
+          - expected: subtract
+            actual: "{receiver.output.data.operation}"
+
+    - to: multiply
+      conditions:
+        match:
+          - expected: multiply
+            actual: "{receiver.output.data.operation}"
+
+    - to: divide
+      conditions:
+        match:
+          - expected: divide
+            actual: "{receiver.output.data.operation}"

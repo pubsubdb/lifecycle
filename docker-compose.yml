@@ -1,0 +1,127 @@
+version: '3.9'
+
+services:
+  redis:
+    image: redis:latest
+    command: ["redis-server", "--requirepass", "key_admin", "--port", "6378"]
+    ports:
+      - "6378:6378"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-h", "localhost", "-p", "6378", "-a", "key_admin", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  moderator1:
+    build:
+      context: .
+      target: development
+    command: npm run server
+    container_name: engine1
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+      - "9228:9228"
+    environment:
+      - NODE_ENV=development
+      - PSDB_ROLE=MODERATOR
+    # depends_on:
+    #   redis:
+    #     condition: service_healthy
+
+  engine1:
+    build:
+      context: .
+      target: development
+    command: npm run service
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - PSDB_ROLE=ENGINE
+
+  execute1:
+    build:
+      context: .
+      target: development
+    command: npm run service
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - PSDB_ROLE=WORKER
+      - PSDB_TOPIC=calculation.execute
+
+  add1:
+    build:
+      context: .
+      target: development
+    command: npm run service
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - PSDB_ROLE=WORKER
+      - PSDB_TOPIC=calculate.add
+
+  subtract1:
+    build:
+      context: .
+      target: development
+    command: npm run service
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - PSDB_ROLE=WORKER
+      - PSDB_TOPIC=calculate.subtract
+
+  subtract2:
+    build:
+      context: .
+      target: development
+    command: npm run service
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - PSDB_ROLE=WORKER
+      - PSDB_TOPIC=calculate.subtract
+
+  multiply1:
+    build:
+      context: .
+      target: development
+    command: npm run service
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - PSDB_ROLE=WORKER
+      - PSDB_TOPIC=calculate.multiply
+
+  multiply2:
+    build:
+      context: .
+      target: development
+    command: npm run service
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - PSDB_ROLE=WORKER
+      - PSDB_TOPIC=calculate.multiply
+
+  divide1:
+    build:
+      context: .
+      target: development
+    command: npm run service
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - PSDB_ROLE=WORKER
+      - PSDB_TOPIC=calculate.divide
