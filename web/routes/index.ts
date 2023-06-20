@@ -1,8 +1,10 @@
 import { FastifyInstance } from 'fastify';
-import { PubSubDB } from '@pubsubdb/pubsubdb';
-import { JobStatsInput } from '@pubsubdb/pubsubdb/typedefs/stats';
-import { JobData } from '@pubsubdb/pubsubdb/build/typedefs/job';
 import { Params, Query, Body } from '../../typedefs/http';
+import { PubSubDB } from '@pubsubdb/pubsubdb';
+import {
+  JobData,
+  JobStatsInput,
+  RollCallMessage } from '@pubsubdb/pubsubdb/build/types';
 
 export const registerAppRoutes = (server: FastifyInstance, pubSubDB: PubSubDB) => {
 
@@ -11,7 +13,9 @@ export const registerAppRoutes = (server: FastifyInstance, pubSubDB: PubSubDB) =
   });
 
   server.post<{ Params: Params; Body: Body; QueryString: Query }>('/v1/pubsub/:topic', async (request, reply) => {
-    return await pubSubDB.pubsub(request.params.topic, request.body);
+    const delay = (request.query as Query).timeout;
+    const delayMS = parseInt(delay) || undefined;
+    return await pubSubDB.pubsub(request.params.topic, request.body, delayMS);
   });
 
   server.post<{ Params: Params; Body: Body; QueryString: Query }>('/v1/quorum/actions/deploy/:app/:version', async (request, reply) => {
@@ -32,11 +36,21 @@ export const registerAppRoutes = (server: FastifyInstance, pubSubDB: PubSubDB) =
   });
 
   server.post<{ Params: Params; Body: Body; QueryString: Query }>('/v1/quorum/actions/rollcall', async (request, reply) => {
-    return await pubSubDB.quorum.pub({
+    const payload: RollCallMessage = {
       type: 'rollcall',
       guid: request.body.guid === '$self' ? pubSubDB.guid : request.body.guid,
       topic: request.body.topic,
-    });
+    };
+    if (request.body.guid === '$self') {
+      request.body.topic == pubSubDB.guid;
+    }
+    if (request.body.guid) {
+      payload.guid = request.body.guid;
+    }
+    if (request.body.topic) {
+      payload.topic = request.body.topic;
+    }
+    return await pubSubDB.quorum.pub(payload);
   });
 
   server.post<{ Params: Params; Body: Body }>('/v1/stats/general/:topic', async (request, reply) => {
@@ -76,7 +90,10 @@ export const registerAppRoutes = (server: FastifyInstance, pubSubDB: PubSubDB) =
     return { status: 'ok', items };
   });
 
-  server.get<{ Params: Params }>('/v1/jobs/:job_id', async (request, reply) => {
-    return await pubSubDB.get(request.params.job_id);
+  server.get<{ Params: Params }>('/v1/jobs/:topic/:job_id', async (request, reply) => {
+    if ((request.query as Query).metadata) {
+      return await pubSubDB.getState(request.params.topic, request.params.job_id);
+    }
+    return (await pubSubDB.getState(request.params.topic, request.params.job_id)).data;
   });
 };

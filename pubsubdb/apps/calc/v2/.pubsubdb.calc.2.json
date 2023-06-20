@@ -1,0 +1,362 @@
+{
+  "app": {
+    "id": "calc",
+    "version": "2",
+    "settings": {
+      "some_boolean": false
+    },
+    "graphs": [
+      {
+        "subscribes": "calculate",
+        "publishes": "calculated",
+        "input": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "enum": [
+                  "add",
+                  "subtract",
+                  "multiply",
+                  "divide"
+                ]
+              },
+              "values": {
+                "type": "string",
+                "description": "stringified JSON array of numbers"
+              }
+            }
+          }
+        },
+        "output": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "activities": {
+          "calculate": {
+            "title": "Calculate",
+            "type": "trigger"
+          },
+          "operate": {
+            "title": "Operate",
+            "type": "await",
+            "subtype": "calculation.execute",
+            "input": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "operation": {
+                    "type": "string",
+                    "enum": [
+                      "add",
+                      "subtract",
+                      "multiply",
+                      "divide"
+                    ]
+                  },
+                  "values": {
+                    "type": "string",
+                    "description": "stringified JSON array of numbers"
+                  }
+                }
+              },
+              "maps": {
+                "operation": "{calculate.output.data.operation}",
+                "values": "{calculate.output.data.values}"
+              }
+            },
+            "job": {
+              "maps": {
+                "result": "{operate.output.data.result}"
+              }
+            }
+          }
+        },
+        "transitions": {
+          "calculate": [
+            {
+              "to": "operate"
+            }
+          ]
+        }
+      },
+      {
+        "subscribes": "calculation.execute",
+        "publishes": "calculation.executed",
+        "input": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "enum": [
+                  "add",
+                  "subtract",
+                  "multiply",
+                  "divide"
+                ]
+              },
+              "values": {
+                "type": "string",
+                "description": "stringified JSON array of numbers"
+              }
+            }
+          }
+        },
+        "output": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "activities": {
+          "receiver": {
+            "title": "Receive Values",
+            "type": "trigger"
+          },
+          "add": {
+            "title": "Add",
+            "type": "exec",
+            "subtype": "calculation.add",
+            "input": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "operation": {
+                    "type": "string",
+                    "enum": [
+                      "add",
+                      "subtract",
+                      "multiply",
+                      "divide"
+                    ]
+                  },
+                  "values": {
+                    "type": "string",
+                    "description": "stringified JSON array of numbers"
+                  }
+                }
+              },
+              "maps": {
+                "operation": "{receiver.output.data.operation}",
+                "values": "{receiver.output.data.values}"
+              }
+            },
+            "job": {
+              "maps": {
+                "result": "{$self.output.data.result}"
+              }
+            }
+          },
+          "subtract": {
+            "title": "Subtract",
+            "type": "exec",
+            "subtype": "calculation.subtract",
+            "input": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "operation": {
+                    "type": "string",
+                    "enum": [
+                      "add",
+                      "subtract",
+                      "multiply",
+                      "divide"
+                    ]
+                  },
+                  "values": {
+                    "type": "string",
+                    "description": "stringified JSON array of numbers"
+                  }
+                }
+              },
+              "maps": {
+                "operation": "{receiver.output.data.operation}",
+                "values": "{receiver.output.data.values}"
+              }
+            },
+            "job": {
+              "maps": {
+                "result": "{$self.output.data.result}"
+              }
+            }
+          },
+          "multiply": {
+            "title": "Multiply",
+            "type": "exec",
+            "subtype": "calculation.multiply",
+            "input": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "operation": {
+                    "type": "string",
+                    "enum": [
+                      "add",
+                      "subtract",
+                      "multiply",
+                      "divide"
+                    ]
+                  },
+                  "values": {
+                    "type": "string",
+                    "description": "stringified JSON array of numbers"
+                  }
+                }
+              },
+              "maps": {
+                "operation": "{receiver.output.data.operation}",
+                "values": "{receiver.output.data.values}"
+              }
+            },
+            "job": {
+              "maps": {
+                "result": "{$self.output.data.result}"
+              }
+            }
+          },
+          "divide": {
+            "title": "Divide",
+            "type": "exec",
+            "subtype": "calculation.divide",
+            "input": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "operation": {
+                    "type": "string",
+                    "enum": [
+                      "add",
+                      "subtract",
+                      "multiply",
+                      "divide"
+                    ]
+                  },
+                  "values": {
+                    "type": "string",
+                    "description": "stringified JSON array of numbers"
+                  }
+                }
+              },
+              "maps": {
+                "operation": "{receiver.output.data.operation}",
+                "values": "{receiver.output.data.values}"
+              }
+            },
+            "job": {
+              "maps": {
+                "result": "{$self.output.data.result}"
+              }
+            }
+          },
+          "executor": {
+            "title": "Execute Calculation",
+            "deprecated": true,
+            "type": "exec",
+            "subtype": "calculation.execute",
+            "input": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "operation": {
+                    "type": "string",
+                    "enum": [
+                      "add",
+                      "subtract",
+                      "multiply",
+                      "divide"
+                    ]
+                  },
+                  "values": {
+                    "type": "string",
+                    "description": "stringified JSON array of numbers"
+                  }
+                }
+              },
+              "maps": {
+                "operation": "{receiver.output.data.operation}",
+                "values": "{receiver.output.data.values}"
+              }
+            },
+            "job": {
+              "maps": {
+                "result": "{$self.output.data.result}"
+              }
+            }
+          }
+        },
+        "transitions": {
+          "receiver": [
+            {
+              "to": "add",
+              "conditions": {
+                "match": [
+                  {
+                    "expected": "add",
+                    "actual": "{receiver.output.data.operation}"
+                  }
+                ]
+              }
+            },
+            {
+              "to": "subtract",
+              "conditions": {
+                "match": [
+                  {
+                    "expected": "subtract",
+                    "actual": "{receiver.output.data.operation}"
+                  }
+                ]
+              }
+            },
+            {
+              "to": "multiply",
+              "conditions": {
+                "match": [
+                  {
+                    "expected": "multiply",
+                    "actual": "{receiver.output.data.operation}"
+                  }
+                ]
+              }
+            },
+            {
+              "to": "divide",
+              "conditions": {
+                "match": [
+                  {
+                    "expected": "divide",
+                    "actual": "{receiver.output.data.operation}"
+                  }
+                ]
+              }
+            },
+            {
+              "to": "executor",
+              "conditions": {
+                "match": [
+                  {
+                    "expected": "executor",
+                    "actual": "{receiver.output.data.operation}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -161,7 +161,7 @@
             },
             "job": {
               "maps": {
-                "result": "{executor.output.data.result}"
+                "result": "{$self.output.data.result}"
               }
             }
           }

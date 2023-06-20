@@ -1,7 +1,7 @@
 {
   "name": "con",
   "version": "0.0.1",
-  "description": "The PubSubDB Connection Test Client.",
+  "description": "The PubSubDB Lifecycle Test Client.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -22,7 +22,7 @@
     "@fastify/swagger": "^8.3.1",
     "@fastify/swagger-ui": "^1.8.0",
     "@fastify/websocket": "^8.1.0",
-    "@pubsubdb/pubsubdb": "^0.0.23",
+    "@pubsubdb/pubsubdb": "^0.0.25",
     "fastify": "^4.17.0",
     "ioredis": "^5.3.2",
     "redis": "^4.6.5"

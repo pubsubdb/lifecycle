@@ -8,7 +8,7 @@ const start = async () => {
     topic: process.env.PSDB_TOPIC || '',
   });
 
-  console.log('PubSubDB initialized successfully', { 
+  pubSubDB.logger.info('PubSubDB initialized successfully', { 
     name: pubSubDB.namespace,
     app: pubSubDB.appId,
     guid: pubSubDB.guid,
