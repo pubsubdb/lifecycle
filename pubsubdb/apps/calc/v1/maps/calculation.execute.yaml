@@ -7,4 +7,4 @@ executor:
     operation: '{receiver.output.data.operation}'
     values: '{receiver.output.data.values}'
   job:
-    result: '{executor.output.data.result}'
+    result: '{$self.output.data.result}'

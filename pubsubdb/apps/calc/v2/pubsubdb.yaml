@@ -3,10 +3,6 @@ app:
   version: '2'
   settings:
     some_boolean: false
-    some:
-      nested:
-        string: goodbye
-        integer: 60
   graphs:
     - $ref: ../v1/graphs/calculate.yaml
     - $ref: ./graphs/calculation.execute.yaml

@@ -3,6 +3,7 @@ version: '3.9'
 services:
   redis:
     image: redis:latest
+    container_name: redis
     command: ["redis-server", "--requirepass", "key_admin", "--port", "6378"]
     ports:
       - "6378:6378"
@@ -17,7 +18,7 @@ services:
       context: .
       target: development
     command: npm run server
-    container_name: engine1
+    container_name: moderator1
     volumes:
       - .:/app
       - /app/node_modules
@@ -35,6 +36,7 @@ services:
     build:
       context: .
       target: development
+    container_name: engine1
     command: npm run service
     volumes:
       - .:/app
@@ -46,6 +48,7 @@ services:
     build:
       context: .
       target: development
+    container_name: execute1
     command: npm run service
     volumes:
       - .:/app
@@ -58,70 +61,76 @@ services:
     build:
       context: .
       target: development
+    container_name: add1
     command: npm run service
     volumes:
       - .:/app
       - /app/node_modules
     environment:
       - PSDB_ROLE=WORKER
-      - PSDB_TOPIC=calculate.add
+      - PSDB_TOPIC=calculation.add
 
   subtract1:
     build:
       context: .
       target: development
+    container_name: subtract1
     command: npm run service
     volumes:
       - .:/app
       - /app/node_modules
     environment:
       - PSDB_ROLE=WORKER
-      - PSDB_TOPIC=calculate.subtract
+      - PSDB_TOPIC=calculation.subtract
 
   subtract2:
     build:
       context: .
       target: development
+    container_name: subtract2
     command: npm run service
     volumes:
       - .:/app
       - /app/node_modules
     environment:
       - PSDB_ROLE=WORKER
-      - PSDB_TOPIC=calculate.subtract
+      - PSDB_TOPIC=calculation.subtract
 
   multiply1:
     build:
       context: .
       target: development
+    container_name: multiply1
     command: npm run service
     volumes:
       - .:/app
       - /app/node_modules
     environment:
       - PSDB_ROLE=WORKER
-      - PSDB_TOPIC=calculate.multiply
+      - PSDB_TOPIC=calculation.multiply
 
   multiply2:
     build:
       context: .
       target: development
+    container_name: multiply2
     command: npm run service
     volumes:
       - .:/app
       - /app/node_modules
     environment:
       - PSDB_ROLE=WORKER
-      - PSDB_TOPIC=calculate.multiply
+      - PSDB_TOPIC=calculation.multiply
 
   divide1:
     build:
       context: .
       target: development
+    container_name: divide1
     command: npm run service
     volumes:
       - .:/app
       - /app/node_modules
     environment:
       - PSDB_ROLE=WORKER
-      - PSDB_TOPIC=calculate.divide
+      - PSDB_TOPIC=calculation.divide

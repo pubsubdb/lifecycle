@@ -68,7 +68,7 @@ activities:
 
   executor:
     title: Execute Calculation
-    description: DEPRECATED
+    deprecated: true
     type: exec
     subtype: calculation.execute
     input:
@@ -104,4 +104,10 @@ transitions:
       conditions:
         match:
           - expected: divide
+            actual: "{receiver.output.data.operation}"
+  
+    - to: executor
+      conditions:
+        match:
+          - expected: executor
             actual: "{receiver.output.data.operation}"
