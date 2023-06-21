@@ -3,10 +3,10 @@ publishes: calculation.executed
 
 input:
   schema:
-    $ref: '../../v1/schemas/calculate.yaml#/input'
+    $ref: '../../v2/schemas/calculate.yaml#/input'
 output:
   schema:
-    $ref: '../../v1/schemas/calculate.yaml#/output'
+    $ref: '../../v2/schemas/calculate.yaml#/output'
 
 activities:
 
@@ -20,7 +20,7 @@ activities:
     subtype: calculation.add
     input:
       schema:
-        $ref: '../../v1/schemas/calculate.yaml#/input'
+        $ref: '../../v2/schemas/calculate.yaml#/input'
       maps:
         $ref: '../../v1/maps/calculation.execute.yaml#/executor/input'
     job:
@@ -33,7 +33,7 @@ activities:
     subtype: calculation.subtract
     input:
       schema:
-        $ref: '../../v1/schemas/calculate.yaml#/input'
+        $ref: '../../v2/schemas/calculate.yaml#/input'
       maps:
         $ref: '../../v1/maps/calculation.execute.yaml#/executor/input'
     job:
@@ -46,7 +46,7 @@ activities:
     subtype: calculation.multiply
     input:
       schema:
-        $ref: '../../v1/schemas/calculate.yaml#/input'
+        $ref: '../../v2/schemas/calculate.yaml#/input'
       maps:
         $ref: '../../v1/maps/calculation.execute.yaml#/executor/input'
     job:
@@ -59,7 +59,7 @@ activities:
     subtype: calculation.divide
     input:
       schema:
-        $ref: '../../v1/schemas/calculate.yaml#/input'
+        $ref: '../../v2/schemas/calculate.yaml#/input'
       maps:
         $ref: '../../v1/maps/calculation.execute.yaml#/executor/input'
     job:
@@ -73,7 +73,7 @@ activities:
     subtype: calculation.execute
     input:
       schema:
-        $ref: '../../v1/schemas/calculate.yaml#/input'
+        $ref: '../../v2/schemas/calculate.yaml#/input'
       maps:
         $ref: '../../v1/maps/calculation.execute.yaml#/executor/input'
     job:
