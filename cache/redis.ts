@@ -1,5 +1,5 @@
 import { createClient, RedisClientOptions } from 'redis';
-import { RedisClientType } from '../typedefs/redis';
+import { RedisClientType } from '../types/redis';
 import config from '../config';
 
 class RedisConnection {

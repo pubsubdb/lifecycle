@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { Params, Query, Body } from '../../typedefs/http';
+import { Params, Query, Body } from '../../types/http';
 import { PubSubDB } from '@pubsubdb/pubsubdb';
 import {
   JobData,
